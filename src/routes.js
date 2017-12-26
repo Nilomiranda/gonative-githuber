@@ -1,0 +1,41 @@
+import React from 'react';
+import { colors } from 'styles';
+import { StackNavigator, TabNavigator } from 'react-navigation';
+
+import Header from 'components/header';
+
+// importação das páginas
+
+import Welcome from 'pages/welcome';
+import Repositories from 'pages/repositories';
+import Organizations from 'pages/organizations';
+
+const createRootNavigator = (userExists = false) =>
+  StackNavigator({
+    Welcome: { screen: Welcome },
+    User: {
+      screen: TabNavigator({
+        Repositories: { screen: Repositories },
+        Organizations: { screen: Organizations },
+      }, {
+        swipeEnabled: true,
+        animationEnabled: true,
+        tabBarPosition: 'bottom',
+        tabBarOptions: {
+          showLabel: false,
+          activeTintColor: colors.white,
+          inactiveTintColor: colors.inactive,
+          style: {
+            backgroundColor: colors.primary,
+          },
+        },
+      }),
+    },
+  }, {
+    initialRouteName: userExists ? 'User' : 'Welcome',
+    navigationOptions: {
+      header: props => <Header {...props} />,
+    },
+  });
+
+export default createRootNavigator;
